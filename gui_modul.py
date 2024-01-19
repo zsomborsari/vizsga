@@ -1,3 +1,4 @@
+import sys
 import tkinter as tk
 from tkinter import simpledialog, messagebox
 from main import HouseManager
@@ -24,6 +25,9 @@ class HouseManagerGUI:
         self.button_add_flat = tk.Button(self.master, text="Lakás hozzáadása", command=self.add_flat)
         self.button_add_flat.pack()
 
+        self.button_add_resident_to_flat = tk.Button(self.master, text="Lakó hozzárendelése lakáshoz", command=self.add_resident_to_flat)
+        self.button_add_resident_to_flat.pack()
+
         self.button_save_data = tk.Button(self.master, text="Adatok mentése", command=self.save_data)
         self.button_save_data.pack()
 
@@ -41,6 +45,25 @@ class HouseManagerGUI:
         self.house_manager.add_flat(floor, flat)
         messagebox.showinfo("Siker", "Lakás sikeresen hozzáadva!")
 
+    def add_resident_to_flat(self):
+        residents = ''
+        count = 1
+        for r in self.house_manager.residents_dict.items():
+            residents += f'{count}. {r[1]["name"]}, '
+            count += 1
+        addresident = simpledialog.askinteger("Lakó kiválasztása", residents)
+        
+        flats = ''
+        for f in self.house_manager.flats_dict.items():
+            flats += f'E:{f[1]["floor_number"]} A:{f[1]["flat_number"]}, '
+        toflat = simpledialog.askstring("Lakás kiválasztása", flats)
+
+        self.house_manager.add_resident_to_flat(addresident,toflat)
+
+
+        
+
+
     def save_data(self):
         self.house_manager.save_data_to_file(self.house_manager.flats_database, self.house_manager.residents_database)
         messagebox.showinfo("Siker", "Adatok sikeresen mentve!")
@@ -51,6 +74,9 @@ def run_tkinter_app():
     app = HouseManagerGUI(root)
     root.mainloop()
 
+
+if __name__ == '__main__':
+    sys.exit(run_tkinter_app())
 
 
 
