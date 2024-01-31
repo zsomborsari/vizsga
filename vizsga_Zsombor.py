@@ -1,4 +1,5 @@
-import sys,time
+import sys,time, json
+
 
 class Flat():
     def __init__(self,flat_id, address, number_of_rooms, floor, doorbell):
@@ -62,7 +63,7 @@ class HouseManager():
 
     def save_data_to_file(self,filename):
         with open(filename, 'w') as file:
-            file.write(str(self.__dict__))
+            json.dump(s)
         self.loading_animation()
 
     def load_data_from_file(self, filename):
@@ -169,10 +170,13 @@ class Menu():
                         self.housemanager.save_data_to_file(self.filename)
                         print('Kilépés. ')
                         break
-                        
+
+
 
             except ValueError as e:
                 print(e)
+
+            
 def main():
     menu = Menu()
     menu.run_menu()
